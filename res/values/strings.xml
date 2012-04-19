@@ -19,6 +19,7 @@
     <string name="logoutButton">Logout</string>
     <string name="sessionPickerName">Sessions</string>
     <string name="sessionNewName">Create a new Session</string>
+    <string name="sessionRejoinName">Resume an existing result session</string>
     <string name="sessionExistingName">Join an existing session</string>
     <string name="emailButton">Email Now</string>
     <string name="endSessionButton">End the session</string>
@@ -33,6 +34,7 @@
     <string name="sessionTypeTV">Type</string>
     <string name="sessionTV">Session ID: </string>
     <string name="sessionPassword">Password: </string>
+    <string name="resumeSessionButton">Resume Session</string>
 
     <string-array name="sessionTypes">
         <item>Attendance</item>

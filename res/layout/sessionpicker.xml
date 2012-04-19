@@ -2,36 +2,42 @@
     android:id="@+id/relativeLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bg"
-     >
-
-    <Button
-        android:id="@+id/button_logout"
-        android:layout_width="200dip"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="173dp"
-        android:onClick="logout"
-        android:text="@string/logoutButton" />
+    android:background="@drawable/bg" >
 
     <Button
         android:id="@+id/button_joinsession"
         android:layout_width="200dip"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button_logout"
         android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/button_logout"
         android:onClick="joinSessionClick"
         android:text="@string/joinSessionButton" />
+
+    <Button
+        android:id="@+id/button_resumesession"
+        android:layout_width="200dip"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_joinsession"
+        android:layout_alignLeft="@+id/button_joinsession"
+        android:onClick="resumeSessionClick"
+        android:text="@string/resumeSessionButton" />
 
     <Button
         android:id="@+id/button_startsession"
         android:layout_width="200dip"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_joinsession"
+        android:layout_above="@+id/button_resumesession"
         android:layout_alignLeft="@+id/button_joinsession"
-        android:layout_marginBottom="10dp"
         android:onClick="newSessionClick"
         android:text="@string/startSessionButton" />
+
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="200dip"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_joinsession"
+        android:layout_centerHorizontal="true"
+        android:onClick="logout"
+        android:text="@string/logoutButton" />
 
 </RelativeLayout>

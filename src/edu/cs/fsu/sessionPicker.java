@@ -14,11 +14,19 @@ public class sessionPicker extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sessionpicker);
     }
+    
     public void newSessionClick(View v)
     {
     	Intent i = new Intent(this,edu.cs.fsu.sessionNew.class);
     	startActivity(i);
     }
+    
+    public void resumeSessionClick(View V)
+    {
+    	Intent i = new Intent(this, edu.cs.fsu.sessionRejoin.class);
+    	startActivity(i);
+    }
+    
     public void joinSessionClick(View v)
     {
     	Intent i = new Intent(this,edu.cs.fsu.sessionExisting.class);

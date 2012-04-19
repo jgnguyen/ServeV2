@@ -42,6 +42,9 @@
 		<activity android:name=".sessionForm"
 		          android:label="@string/sessionFormName">
 		</activity>
+				<activity android:name=".sessionRejoin"
+		          android:label="@string/sessionRejoinName">
+		</activity>
     </application>
 
 </manifest>
