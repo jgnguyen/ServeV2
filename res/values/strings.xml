@@ -31,7 +31,8 @@
     <string name="sessionNameRequest">Session Name: </string>
     <string name="createSessionButton">Create Session</string>
     <string name="sessionTypeTV">Type</string>
-    <string name="sessionTV">Session ID:</string>
+    <string name="sessionTV">Session ID: </string>
+    <string name="sessionPassword">Password: </string>
 
     <string-array name="sessionTypes">
         <item>Attendance</item>
