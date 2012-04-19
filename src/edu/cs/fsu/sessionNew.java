@@ -80,6 +80,7 @@ public class sessionNew extends Activity {
 			Toast.makeText(this, "Cannot create session", Toast.LENGTH_SHORT).show();
 		} else {
 			Intent i = new Intent(this,edu.cs.fsu.sessionResults.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			i.putExtra("sessionName", sessName.replace("%20", " "));
 			//add information to the intent
 			startActivity(i);

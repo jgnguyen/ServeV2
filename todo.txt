@@ -1,11 +1,14 @@
-#session id
-- sessions should always keep attendees in list
-- Users::session_id maybe is useless then
-- need to make sure to not add redundancy to attendees
-- check if session id already exists
+# survey form
+[ ] dynamic questions
+[ ] special characters in questions
+[ ] remove radio button
 
-#known bugs
-- cannot create a sessionName with a space in it
+# survey questions
+[ ] after submit logout
+[ ] 
 
-# end session
-Clear database of session info
+# session
+[x] end session
+
+# anonymous session
+[ ] implement

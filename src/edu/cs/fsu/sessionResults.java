@@ -79,6 +79,18 @@ public class sessionResults extends Activity {
 
         updateResults();
 	}
+	
+	public void endSession()
+	{
+		try {
+			serveUtilities.getStringFromUrl(String.format("http://www.fsurugby.org/serve/request.php?destroy=1&sessionID=%s", sessionID));
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void updateResults()
 	{
 		Log.e("sessionResult","go into updateResults");
@@ -202,7 +214,7 @@ public class sessionResults extends Activity {
 	{
 		Log.e("sessionResult","in option bool");
 	    switch (item.getItemId()) {
-	        case R.id.menu_item_endsession:    Intent i = new Intent(this,edu.cs.fsu.sessionPicker.class); Log.e("sessionResult","end session");
+	        case R.id.menu_item_endsession:    Intent i = new Intent(this,edu.cs.fsu.sessionPicker.class); Log.e("sessionResult","end session"); endSession();
 	    										startActivity(i);
 	                            break;
 	        case R.id.menu_item_email:     
