@@ -1,0 +1,41 @@
+<!-- Background source: http://zygat3r.deviantart.com/art/Dark-Wood-58266349 -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg" 
+    >
+
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="89dp"
+        android:textColor="#FFFFFF"
+        android:text="@string/app_name"
+        android:textSize="100dip" />
+
+    <Button
+        android:id="@+id/button_createAccount"
+        android:layout_width="200dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="126dp"
+        android:onClick="createNewAccountClick"
+        android:text="@string/createAccount" />
+
+    <Button
+        android:id="@+id/button_signIn"
+        android:layout_width="200dip"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_createAccount"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:onClick="signInClick"
+        android:text="@string/signIn" />
+
+</RelativeLayout>
