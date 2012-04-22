@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/et_sessionkey"
-        android:text="@string/sessionTV"
+        android:text="@string/sessionPassword"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
     <Button
@@ -49,7 +49,7 @@
         android:layout_alignBottom="@+id/et_sessionkey"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="44dp"
-        android:text="@string/sessionPassword"
+        android:text="@string/sessionTV"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
