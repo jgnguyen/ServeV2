@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -61,6 +62,8 @@ public class sessionResults extends Activity {
 	static final int NUM_QUESTION_ID = 0;
 	private int numOfQuestions;	
 	private NumberPicker mPickInteger;
+	private Handler handler;
+	private Runnable refresh;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +87,35 @@ public class sessionResults extends Activity {
 		id.setText("ID: " +sessionID);
 		type.setText("Type: " +sessionType);
 
+		handler = new Handler();
+		refresh = new Runnable() {
 
-		updateResults();
+			@Override
+			public void run() {
+				updateResults();
+				handler.postDelayed(this, 5000);
+			}
+			
+		};
+		handler.post(refresh);		
+	}
+	
+	@Override
+	public void onResume()
+	{
+		handler.postDelayed(refresh, 5000);
+	}
+	
+	@Override
+	public void onPause()
+	{
+		handler.removeCallbacks(refresh);
+	}
+	
+	@Override 
+	public void onDestroy()
+	{
+		handler.removeCallbacks(refresh);
 	}
 
 	public void updateResults()
@@ -282,7 +312,7 @@ public class sessionResults extends Activity {
 	{
 		Log.e("sessionResult","in option bool");
 		switch (item.getItemId()) {
-		case R.id.menu_item_endsession:    Intent i = new Intent(this,edu.cs.fsu.sessionPicker.class); Log.e("sessionResult","end session");
+		case R.id.menu_item_endsession:   handler.removeCallbacks(refresh); Intent i = new Intent(this,edu.cs.fsu.sessionPicker.class); Log.e("sessionResult","end session");
 		startActivity(i);
 		break;
 		case R.id.menu_item_email:     
