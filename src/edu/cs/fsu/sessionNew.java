@@ -27,7 +27,7 @@ public class sessionNew extends Activity {
 
 		Spinner s = (Spinner) findViewById(R.id.spinner_type);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				this, R.array.sessionTypes, android.R.layout.simple_spinner_dropdown_item);
+				this, R.array.sessionTypes, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		s.setAdapter(adapter);
 	}
