@@ -1,90 +1,3 @@
-<<<<<<< HEAD
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bg" >
-
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-              <TextView 
-            android:id="@+id/textView_sessionName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sessionNameRequest"/>
-     <EditText
-            android:id="@+id/editText_sessionName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-              <TextView 
-            android:id="@+id/textView_sessionID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sessionIDRequest"/>
-
-        <EditText
-            android:id="@+id/editText_sessionID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-              <TextView 
-            android:id="@+id/textView_sessionPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sessionPassword"/>
-
-        <EditText
-            android:id="@+id/editText_sessionPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sessionTypeTV" />
-
-        <Spinner
-            android:id="@+id/spinner_type"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/createSessionButton"
-        android:onClick="submit" />
-
-</LinearLayout>
-=======
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -122,9 +35,24 @@
 
         <EditText
             android:id="@+id/editText_sessionID"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:inputType="number" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/textView_sessionPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sessionPassword" />
+
+        <EditText
+            android:id="@+id/editText_sessionPassword"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="textPassword" />
     </TableRow>
 
     <TableRow>
@@ -151,4 +79,3 @@
         android:text="@string/createSessionButton" />
 
 </TableLayout>
->>>>>>> danny
