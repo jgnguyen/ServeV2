@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+>>>>>>> danny
     <string name="app_name">servé</string>
     <string name="signIn">Sign In</string>
     <string name="createAccount">Create a New Account</string>
@@ -15,11 +21,18 @@
     <string name="createForm">Create Form</string>
     <string name="attendanceCheck">Attendance Check</string>
     <string name="startSessionButton">Start Session</string>
+<<<<<<< HEAD
     <string name="joinSessionButton">Join Session</string>
     <string name="logoutButton">Logout</string>
     <string name="sessionPickerName">Sessions</string>
     <string name="sessionNewName">Create a new Session</string>
     <string name="sessionRejoinName">Resume an existing result session</string>
+=======
+    <string name="joinSessionButton">Join Session</string>
+    <string name="logoutButton">Logout</string>
+    <string name="sessionPickerName">Sessions</string>
+    <string name="sessionNewName">Create a new Session</string>
+>>>>>>> danny
     <string name="sessionExistingName">Join an existing session</string>
     <string name="emailButton">Email Now</string>
     <string name="endSessionButton">End the session</string>
@@ -27,6 +40,7 @@
     <string name="sessionKeyButton">Join this session</string>
     <string name="exitSessionButton">Exit Session</string>
     <string name="sessionResultsName">Live Results Now!</string>
+<<<<<<< HEAD
     <string name="sessionFormName">Fill in this Form, Download the File, Sign into attendence</string>
     <string name="sessionIDRequest">Session ID: </string>
     <string name="sessionNameRequest">Session Name: </string>
@@ -42,4 +56,22 @@
         <item>Survey (Anonymous)</item>
     </string-array>
     
+=======
+    <string name="sessionFormName">Fill in this Form, Download the File, Sign into attendence</string>
+    <string name="sessionIDRequest">Session ID: </string>
+    <string name="sessionNameRequest">Session Name: </string>
+    <string name="createSessionButton">Create Session</string>
+    <string name="createSurveyButton">Create Survey</string>
+    <string name="addQuestionButton">Add Question</string>
+    <string name="sessionTypeTV">Type</string>
+    <string name="sessionTV">Session ID:</string>
+    <string name="question">Question:</string>
+
+    <string-array name="sessionTypes">
+        <item>Attendance</item>
+        <item>Survey</item>
+        <item>Survey (Anonymous)</item>
+    </string-array>
+    
+>>>>>>> danny
 </resources>
