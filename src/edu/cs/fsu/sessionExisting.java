@@ -45,9 +45,7 @@ public class sessionExisting extends Activity{
 			if (!result.equals("good")) {
 				Log.e("JoiningSession","Failed to join session");
 			}
-			else {
-				Toast.makeText(getApplicationContext(), "You have successfully joined session "+sessionID, Toast.LENGTH_SHORT).show();
-				
+			else {				
 				Intent i = new Intent(this,edu.cs.fsu.sessionForm.class);
 				startActivity(i);
 			}

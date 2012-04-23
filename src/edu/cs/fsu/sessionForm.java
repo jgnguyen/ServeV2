@@ -6,6 +6,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,7 +29,7 @@ public class sessionForm extends Activity{
 	public int numOfQuestions;
 	public String sendResult = "";
 	JSONArray json;
-	
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sessionform);
@@ -47,13 +49,13 @@ public class sessionForm extends Activity{
 		{
 			Log.d("tagger","fauked ti getstrubfrom url");
 		}
-		
+
 		if (!jsonresults.equals("[]")) {
-			
+
 			setContentView(R.layout.sessionformview);
-			
+
 			LinearLayout myLayout = (LinearLayout) findViewById(R.id.linearLayout1);
-			
+
 			Log.d("SessionForm", "Inside question array work");
 			try {
 				json = new JSONArray(jsonresults);
@@ -64,48 +66,48 @@ public class sessionForm extends Activity{
 
 			try {
 				question = json.getJSONObject(0).getString("questions");
-				
+
 				Log.d("blah", question);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			numOfQuestions = question.split(",").length;
 
 			questions = question.split(",");
-			
+
 			Log.d("TestingQuestion", questions[0]);
-			
+
 			final TextView[] myTextViews = new TextView[numOfQuestions]; // create an empty array;
 			final EditText[] myEditTexts = new EditText[numOfQuestions];
 
 			for (int i = 0; i < numOfQuestions; i++) {
-			    // create a new textview
-			    final TextView rowTextView = new TextView(this);
-			    final EditText rowEditText = new EditText(this);
+				// create a new textview
+				final TextView rowTextView = new TextView(this);
+				final EditText rowEditText = new EditText(this);
 
-			    // set some properties of rowTextView or something
-			    rowTextView.setText(questions[i]);
+				// set some properties of rowTextView or something
+				rowTextView.setText(questions[i]);
 
-			    // add the textview to the linearlayout
-			    myLayout.addView(rowTextView);
-			    myLayout.addView(rowEditText);
+				// add the textview to the linearlayout
+				myLayout.addView(rowTextView);
+				myLayout.addView(rowEditText);
 
-			    // save a reference to the textview for later
-			    myTextViews[i] = rowTextView;
-			    myEditTexts[i] = rowEditText;
+				// save a reference to the textview for later
+				myTextViews[i] = rowTextView;
+				myEditTexts[i] = rowEditText;
 			}
-			
+
 			Button btn = new Button(this);
 			btn.setText("Submit Answers");
 			myLayout.addView(btn);
-			
+
 			btn.setOnClickListener(new View.OnClickListener() {
-				
+
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					
+
 					for (int i = 0; i < numOfQuestions; i++) {
 						if (i == 0)
 							sendResult += myEditTexts[i].getText().toString().replace(" ", "%20");
@@ -114,10 +116,10 @@ public class sessionForm extends Activity{
 							sendResult += myEditTexts[i].getText().toString().replace(" ", "%20");
 						}
 					}
-					
+
 					String url = String.format("http://www.fsurugby.org/serve/request.php?answer_survey=1&sessionID=%s&fname=%s&lname=%s&answers=%s", 
 							sessionID, fname, lname, sendResult);
-					
+
 					String result = "";
 					try {
 						result = serveUtilities.getStringFromUrl(url);
@@ -134,7 +136,27 @@ public class sessionForm extends Activity{
 					}
 					else {
 						Log.d("AnsweringForm", "Answered form correctly!");
-						Toast.makeText(getApplicationContext(), "You have successfully completed the Form", Toast.LENGTH_SHORT).show();
+
+						// make alert dialog send back to sessionPicker.java
+
+						AlertDialog.Builder builder = new AlertDialog.Builder(sessionForm.this);
+						builder.setMessage("Survey submitted successfully!")
+						.setCancelable(false)
+						.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								final SharedPreferences app_preferences = PreferenceManager.getDefaultSharedPreferences(sessionForm.this);
+								final SharedPreferences.Editor editor = app_preferences.edit();
+
+								editor.putString("sessionID", "");
+								editor.commit();
+
+								Intent i = new Intent(sessionForm.this,edu.cs.fsu.sessionPicker.class);
+								startActivity(i);
+							}
+						});
+						AlertDialog alert = builder.create();
+						alert.show();
+
 					}  
 				}
 			});
@@ -142,19 +164,24 @@ public class sessionForm extends Activity{
 		}
 		else {
 			Log.d("SessionForm","There is no session survey!");
+			// do a dialog box
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Attendance has been recorded!")
+			.setCancelable(false)
+			.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					final SharedPreferences app_preferences = PreferenceManager.getDefaultSharedPreferences(sessionForm.this);
+					final SharedPreferences.Editor editor = app_preferences.edit();
+
+					editor.putString("sessionID", "");
+					editor.commit();
+
+					Intent i = new Intent(sessionForm.this,edu.cs.fsu.sessionPicker.class);
+					startActivity(i);
+				}
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
 		}
-	}
-	public void submitAttendenceClick(View v)
-	{
-
-	}
-	public void downloadFileClick(View v)
-	{
-
-	}
-	public void exitSession(View v)
-	{
-		Intent i = new Intent(this,edu.cs.fsu.sessionPicker.class);
-		startActivity(i);
 	}
 }

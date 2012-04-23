@@ -38,6 +38,7 @@ public class sessionResults extends Activity {
 	private String[] values2;
 	private String[] values3;
 	private String[] values4;
+	private String[] annonymousValues;
 
 	// var associated with JSON parsing
 	private String nameList;
@@ -49,6 +50,7 @@ public class sessionResults extends Activity {
 	private String sessionID;
 	private String sessionName;
 	private String sessionType;
+	private String sessionPermType;
 	private TextView id;
 	private TextView name;
 	private TextView type;
@@ -61,14 +63,13 @@ public class sessionResults extends Activity {
 
 	static final int NUM_QUESTION_ID = 0;
 	private int numOfQuestions;	
-	private NumberPicker mPickInteger;
 	private Handler handler;
 	private Runnable refresh;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 
 		setContentView(R.layout.sessionresults);
 
@@ -82,56 +83,18 @@ public class sessionResults extends Activity {
 		sessionID = app_preferences.getString("sessionID", "");
 		sessionType = app_preferences.getString("type", "");
 		sessionName = getIntent().getStringExtra("sessionName");
+		sessionPermType = sessionType;
 		Log.e("tagger ssid",sessionID);
 		name.setText("Session Name: "+ sessionName);
 		id.setText("ID: " +sessionID);
 		type.setText("Type: " +sessionType);
-
-		handler = new Handler();
-		refresh = new Runnable() {
-
-			@Override
-			public void run() {
-				updateResults();
-				handler.postDelayed(this, 5000);
-			}
-			
-		};
-		handler.post(refresh);		
-	}
-	
-	@Override
-	public void onResume()
-	{
-		handler.postDelayed(refresh, 5000);
-	}
-	
-	@Override
-	public void onPause()
-	{
-		handler.removeCallbacks(refresh);
-	}
-	
-	@Override 
-	public void onDestroy()
-	{
-		handler.removeCallbacks(refresh);
-	}
-
-	public void updateResults()
-	{
-		Log.d("sessionResult","go into updateResults");
-
-		if(sessionType.equals("attendance"))
-		{
-			Log.d("sessionResult","go into attendance");
-			getSessionResults();    
-		}
-		else if(sessionType.equals("survey") )
+		
+		if((sessionType.equals("survey")) || (sessionType.equals("surveyannony")))
 		{
 			Log.d("sessionResult","go into survey");
 			setContentView(R.layout.sessionformview);
-/*
+			
+			/*
 			 TableLayout.LayoutParams params;
              TableLayout layout = new TableLayout(this);
              layout.setPadding(6, 6, 6, 6);
@@ -163,15 +126,11 @@ public class sessionResults extends Activity {
              }
              catch (Exception ex)
              {
-            	 
-             }
-  */           
-			
-			
-	
-			
-			final CharSequence[] items = {"1 Question", "2 Questions", "3 Questions", "4 Questions", "5 Questions", "6 Questions", "7 Questions", "8 Questions", "9 Questions", "10 Questions"};
 
+             }
+			 */           
+
+			final CharSequence[] items = {"1 Question", "2 Questions", "3 Questions", "4 Questions", "5 Questions", "6 Questions", "7 Questions", "8 Questions", "9 Questions", "10 Questions"};
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("How many questions?");
@@ -208,6 +167,49 @@ public class sessionResults extends Activity {
 			alert.show();
 
 		}
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		handler = new Handler();
+		refresh = new Runnable() {
+
+			@Override
+			public void run() {
+				updateResults();
+				handler.postDelayed(this, 5000);
+			}
+			
+		};
+		handler.post(refresh);
+	}
+	
+	@Override
+	public void onPause()
+	{
+		handler.removeCallbacks(refresh);
+		super.onPause();
+	}
+	
+	@Override 
+	public void onDestroy()
+	{
+		handler.removeCallbacks(refresh);
+		super.onDestroy();
+	}
+
+	public void updateResults()
+	{
+		Log.d("sessionResult","go into updateResults");
+
+		if(sessionType.equals("attendance"))
+		{
+			Log.d("sessionResult","go into attendance");
+			getSessionResults();    
+			
+		}
 		else if(sessionType.equals("submitSurvey") )
 		{
 			Log.d("sessionResult","go into submitSurvey");
@@ -225,7 +227,7 @@ public class sessionResults extends Activity {
 			name.setText("Session Name: "+ sessionName);
 			id.setText("ID: " +sessionID);
 			type.setText("Type: Survey Answers");
-			getSessionResults();   
+			getSessionResults();
 			results.setOnItemClickListener (listener);
 			results.setItemsCanFocus(true);
 
@@ -236,16 +238,6 @@ public class sessionResults extends Activity {
 
 		}
 		Log.d("sessionResult","Done Update Results");
-	}
-
-	public void getFileResults()
-	{
-
-
-	}
-	public void getAnonSurveyResults()
-	{
-
 	}
 	public void getSessionResults()
 	{
@@ -260,21 +252,21 @@ public class sessionResults extends Activity {
 		}
 		catch(Exception e)
 		{
-			Log.e("sessionResult","Failed to get from URL");
+			Log.d("sessionResult","Failed to get from URL");
 
 		}
 
 
 		try {
 			jObject = new JSONArray(jsonresults);
-			Log.e("sessionResult","got jsonArrayL");
+			Log.d("sessionResult","got jsonArrayL");
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 
-		Log.e("sessionResult jObject",jObject.toString());
+		Log.d("sessionResult jObject",jObject.toString());
 
 
 		try {
@@ -285,20 +277,35 @@ public class sessionResults extends Activity {
 			e.printStackTrace();
 		}
 
+		Log.d("sessionResult namelist",nameList.toString());
 
-		Log.e("sessionResult namelist",nameList.toString());
+		if (sessionPermType.equals("surveyannony")) {
+			Log.d("Testing", "inside surveyannony");
+			int count = nameList.length() - nameList.replace(",", "").length();
+			annonymousValues = new String[count+1];
+			for (int i = 0; i <= count; i++) {
+				annonymousValues[i] = "Annonymous User " + (i+1);
+			}
+		}
 
 		values = nameList.split(",");
 
-		Log.e("sessionResult values",values.toString());
+		Log.d("sessionResult values",values.toString());
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, android.R.id.text1, values);
+		if (sessionPermType.equals("surveyannony")) {
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, annonymousValues);
+			results.setAdapter(adapter);
+		}
+		else {
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, values);
+			results.setAdapter(adapter);
+		}
 
-		results.setAdapter(adapter);
-		Log.e("sessionResult","set adpater");
+		Log.d("sessionResult","set adpater");
 
-		Log.e("sessionResult","finished updating info");
+		Log.d("sessionResult","finished updating info");
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -310,11 +317,13 @@ public class sessionResults extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		Log.e("sessionResult","in option bool");
+		Log.d("sessionResult","in option bool");
 		switch (item.getItemId()) {
-		case R.id.menu_item_endsession:   handler.removeCallbacks(refresh); Intent i = new Intent(this,edu.cs.fsu.sessionPicker.class); Log.e("sessionResult","end session");
-		startActivity(i);
-		break;
+		case R.id.menu_item_endsession:
+		    handler.removeCallbacks(refresh);    
+			Intent i = new Intent(this,edu.cs.fsu.sessionPicker.class); Log.e("sessionResult","end session");
+			startActivity(i);
+			break;
 		case R.id.menu_item_email:     
 			break;  
 		case R.id.menu_item_save: 
@@ -324,7 +333,7 @@ public class sessionResults extends Activity {
 			break;
 		}
 
-		Log.e("sessionResult","out option bool");
+		Log.d("sessionResult","out option bool");
 		return true;
 	}
 
@@ -332,7 +341,7 @@ public class sessionResults extends Activity {
 	{
 		String question1, question2, question3, question4, question5, question6, question7, question8, question9, question10;
 		sendResult = "";
-		
+
 		switch (numOfQuestions) {
 		case 1:
 			et_question1 = (EditText) findViewById(R.id.editText_question1);
@@ -497,10 +506,10 @@ public class sessionResults extends Activity {
 		}
 
 		if (!result.equals("good")) {
-			Log.e("JoiningSession","Failed to join session");
+			Log.d("JoiningSession","Failed to join session");
 		}
 		else {
-			Log.e("CreatedSurvey", "Created it correctly!");
+			Log.d("CreatedSurvey", "Created it correctly!");
 
 			sessionType="submitSurvey";
 			updateResults();
@@ -510,7 +519,7 @@ public class sessionResults extends Activity {
 	{
 		url = String.format("http://www.fsurugby.org/serve/request.php?survey_questions=1&sessionID=%s",sessionID);
 
-		Log.e("SessionResult", "in get indvidual result");
+		Log.d("SessionResult", "in get indvidual result");
 
 		try{
 			jsonresults = serveUtilities.getStringFromUrl(url);
@@ -527,7 +536,7 @@ public class sessionResults extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		Log.e("SessionResult", jObject.toString());
+		Log.d("SessionResult", jObject.toString());
 		try {
 			nameList = jObject.getJSONObject(0).getString("questions");
 			Log.e("tagger", nameList.toString());
@@ -537,14 +546,14 @@ public class sessionResults extends Activity {
 			e.printStackTrace();
 		}
 		values3 = nameList.split(",");
-		Log.e("SessionResult", values3.toString());
-		Log.e("SessionResult", values3[0].toString());
+		Log.d("SessionResult", values3.toString());
+		Log.d("SessionResult", values3[0].toString());
 
 	}
 	public void getIndvSurveyResult(String fn, String ln, String sID)
 	{
 
-		Log.e("SessionResult", "in get indvidual result");
+		Log.d("SessionResult", "in get indvidual result");
 		url = String.format("http://www.fsurugby.org/serve/request.php?get_answers=1&sessionID=%s&fname=%s&lname=%s", sID, fn, ln);
 
 		try{
@@ -562,18 +571,18 @@ public class sessionResults extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		Log.e("SessionResult", jObject.toString());
+		Log.d("SessionResult", jObject.toString());
 		try {
 			nameList = jObject.getJSONObject(0).getString("answers");
-			Log.e("tagger", nameList.toString());
+			Log.d("tagger", nameList.toString());
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		values2 = nameList.split(",");
-		Log.e("SessionResult", values2.toString());
-		Log.e("SessionResult", values2[0].toString());
+		Log.d("SessionResult", values2.toString());
+		Log.d("SessionResult", values2[0].toString());
 		//Log.e("SessionResult", values2[1].toString());
 
 		getSessionQuestions();
@@ -584,7 +593,7 @@ public class sessionResults extends Activity {
 		for(int x = 0; x < values2.length ; x++)
 		{
 			values4[x] = values3[x].toString() + "\n " + values2[x].toString();
-			Log.e("SessionResult values4 ", values4[x].toString());
+			Log.d("SessionResult values4 ", values4[x].toString());
 		}
 
 		//Log.e("SessionResult", "3");
@@ -596,7 +605,7 @@ public class sessionResults extends Activity {
 		results2.setItemsCanFocus(true);
 
 
-		Log.e("SessionResult", "out of indv results");
+		Log.d("SessionResult", "out of indv results");
 
 	}
 	OnItemClickListener listener = new OnItemClickListener () {
@@ -604,9 +613,8 @@ public class sessionResults extends Activity {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			// TODO Auto-generated method stub
-			Log.e("sessionResult","clicked on a a person tov iew there survey results: "+values[arg2].toString());
-			//String names[] = {"poop","mcGee"};
-			//sessionID="23435";
+			Log.d("sessionResult","clicked on a a person to view there survey results: "+values[arg2].toString());
+
 			String names[];
 			names = (values[arg2].toString()).split(" ");
 
@@ -614,11 +622,19 @@ public class sessionResults extends Activity {
 			results2 = (ListView) findViewById(R.id.sessionResultsIndListView); 
 			fname =(TextView) findViewById(R.id.tv_sessionResultsInd_fname);
 			lname =(TextView) findViewById(R.id.tv_sessionResultsInd_lname);
-			fname.setText("First Name: "+names[1].toString());
-			lname.setText("Last Name: "+names[2].toString());
+			if (sessionPermType.equals("annonysurvey")) {
+				fname.setText("First Name: Annonymous");
+				lname.setText("Last Name: User");
+			}
+			else {
+				fname.setText("First Name: "+names[1].toString());
+				lname.setText("Last Name: "+names[2].toString());
+			}
 
-			Log.e("sessionResult","names "+names[0].toString() +" . "+ names[1].toString()+ " . "+ names[2].toString()+ " "+sessionID.toString());
+			Log.d("sessionResult","names "+names[0].toString() +" . "+ names[1].toString()+ " . "+ names[2].toString()+ " "+sessionID.toString());
 			getIndvSurveyResult(names[1],names[2],sessionID);
+			
+			
 		}
 	};
 
