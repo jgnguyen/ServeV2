@@ -200,6 +200,12 @@ public class sessionResults extends Activity {
 		super.onDestroy();
 	}
 
+	public void onClickBack(View v)
+	{
+		updateResults();
+		handler.post(refresh);
+	}
+	
 	public void updateResults()
 	{
 		Log.d("sessionResult","go into updateResults");
@@ -634,7 +640,7 @@ public class sessionResults extends Activity {
 			Log.d("sessionResult","names "+names[0].toString() +" . "+ names[1].toString()+ " . "+ names[2].toString()+ " "+sessionID.toString());
 			getIndvSurveyResult(names[1],names[2],sessionID);
 			
-			
+			handler.removeCallbacks(refresh);
 		}
 	};
 

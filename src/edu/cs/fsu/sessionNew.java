@@ -69,6 +69,7 @@ public class sessionNew extends Activity {
 
 		String url = String.format("http://www.fsurugby.org/serve/request.php?new_session=1&sessionID=%s&sessionName=%s&fname=%s&lname=%s&password=%s", sID, sessName, fname, lname, sessionPassword);
 		String result = "";
+		
 		try {
 			result = serveUtilities.getStringFromUrl(url);
 		} catch (ClientProtocolException e) {

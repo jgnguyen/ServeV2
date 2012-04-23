@@ -18,7 +18,12 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall" />
-    
+        <Button
+        android:id="@+id/button_sessionkeysubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickBack"
+        android:text="Back" />
      <ListView
         android:id="@+id/sessionResultsIndListView"
         android:layout_width="match_parent"
