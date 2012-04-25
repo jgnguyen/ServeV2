@@ -1,8 +1,13 @@
 package edu.cs.fsu;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,9 +43,13 @@ public class sessionExisting extends Activity{
 			editor.putString("sessionID", sessionID);
 			editor.commit();
 			
-			String url = String.format("http://www.fsurugby.org/serve/request.php?add_attendee=1&sessionID=%s&fname=%s&lname=%s", sessionID, fname, lname);
-			String result = "";
-			result = serveUtilities.getStringFromUrl(url);
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+			nameValuePairs.add(new BasicNameValuePair("add_attendee", "1"));
+			nameValuePairs.add(new BasicNameValuePair("sessionID", sessionID));
+			nameValuePairs.add(new BasicNameValuePair("fname", fname));
+			nameValuePairs.add(new BasicNameValuePair("lname", lname));
+
+			String result = serveUtilities.getStringFromUrl(nameValuePairs);
 
 			if (!result.equals("good")) {
 				Log.e("JoiningSession","Failed to join session");

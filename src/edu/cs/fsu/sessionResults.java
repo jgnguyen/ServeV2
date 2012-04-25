@@ -1,13 +1,16 @@
 package edu.cs.fsu;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,8 +27,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 public class sessionResults extends Activity {
@@ -42,7 +42,6 @@ public class sessionResults extends Activity {
 
 	// var associated with JSON parsing
 	private String nameList;
-	private String url;
 	private String jsonresults;
 	private JSONArray jObject;
 
@@ -248,14 +247,16 @@ public class sessionResults extends Activity {
 	public void getSessionResults()
 	{
 		Log.d("sessionResult","called getSessionResults");
-		url = String.format("http://www.fsurugby.org/serve/request.php?attendees=1&sessionID=%s", sessionID);
 		Log.d("sessionResult sessionID",sessionID);
 
 		nameList = "Waiting for results... (empty)";
 
 		try{
-			jsonresults = serveUtilities.getStringFromUrl(url);
-		}
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("attendees", "1"));
+			nameValuePairs.add(new BasicNameValuePair("sessionID", sessionID));
+
+			jsonresults = serveUtilities.getStringFromUrl(nameValuePairs);		}
 		catch(Exception e)
 		{
 			Log.d("sessionResult","Failed to get from URL");
@@ -351,23 +352,23 @@ public class sessionResults extends Activity {
 		switch (numOfQuestions) {
 		case 1:
 			et_question1 = (EditText) findViewById(R.id.editText_question1);
-			question1 = et_question1.getText().toString().replace(" ", "%20");
+			question1 = et_question1.getText().toString();
 			sendResult += question1;
 			break;
 		case 2:
 			et_question1 = (EditText) findViewById(R.id.editText_question1);
 			et_question2 = (EditText) findViewById(R.id.editText_question2);
-			question1 = et_question1.getText().toString().replace(" ", "%20");
-			question2 = et_question2.getText().toString().replace(" ", "%20");
+			question1 = et_question1.getText().toString();
+			question2 = et_question2.getText().toString();
 			sendResult += question1 + "," + question2;
 			break;
 		case 3:
 			et_question1 = (EditText) findViewById(R.id.editText_question1);
 			et_question2 = (EditText) findViewById(R.id.editText_question2);
 			et_question3 = (EditText) findViewById(R.id.editText_question3);
-			question1 = et_question1.getText().toString().replace(" ", "%20");
-			question2 = et_question2.getText().toString().replace(" ", "%20");
-			question3 = et_question3.getText().toString().replace(" ", "%20");
+			question1 = et_question1.getText().toString();
+			question2 = et_question2.getText().toString();
+			question3 = et_question3.getText().toString();
 			sendResult += question1 + "," + question2 + "," + question3;
 			break;
 		case 4:
@@ -375,10 +376,10 @@ public class sessionResults extends Activity {
 			et_question2 = (EditText) findViewById(R.id.editText_question2);
 			et_question3 = (EditText) findViewById(R.id.editText_question3);
 			et_question4 = (EditText) findViewById(R.id.editText_question4);
-			question1 = et_question1.getText().toString().replace(" ", "%20");
-			question2 = et_question2.getText().toString().replace(" ", "%20");
-			question3 = et_question3.getText().toString().replace(" ", "%20");
-			question4 = et_question4.getText().toString().replace(" ", "%20");
+			question1 = et_question1.getText().toString();
+			question2 = et_question2.getText().toString();
+			question3 = et_question3.getText().toString();
+			question4 = et_question4.getText().toString();
 			sendResult += question1 + "," + question2 + "," + question3 + "," + question4;
 			break;
 		case 5:
@@ -387,11 +388,11 @@ public class sessionResults extends Activity {
 			et_question3 = (EditText) findViewById(R.id.editText_question3);
 			et_question4 = (EditText) findViewById(R.id.editText_question4);
 			et_question5 = (EditText) findViewById(R.id.editText_question5);
-			question1 = et_question1.getText().toString().replace(" ", "%20");
-			question2 = et_question2.getText().toString().replace(" ", "%20");
-			question3 = et_question3.getText().toString().replace(" ", "%20");
-			question4 = et_question4.getText().toString().replace(" ", "%20");
-			question5 = et_question5.getText().toString().replace(" ", "%20");
+			question1 = et_question1.getText().toString();
+			question2 = et_question2.getText().toString();
+			question3 = et_question3.getText().toString();
+			question4 = et_question4.getText().toString();
+			question5 = et_question5.getText().toString();
 			sendResult += question1 + "," + question2 + "," + question3 + "," + question4 + "," + question5;
 			break;
 		case 6: 
@@ -401,12 +402,12 @@ public class sessionResults extends Activity {
 			et_question4 = (EditText) findViewById(R.id.editText_question4);
 			et_question5 = (EditText) findViewById(R.id.editText_question5);
 			et_question6 = (EditText) findViewById(R.id.editText_question6);
-			question1 = et_question1.getText().toString().replace(" ", "%20");
-			question2 = et_question2.getText().toString().replace(" ", "%20");
-			question3 = et_question3.getText().toString().replace(" ", "%20");
-			question4 = et_question4.getText().toString().replace(" ", "%20");
-			question5 = et_question5.getText().toString().replace(" ", "%20");
-			question6 = et_question6.getText().toString().replace(" ", "%20");
+			question1 = et_question1.getText().toString();
+			question2 = et_question2.getText().toString();
+			question3 = et_question3.getText().toString();
+			question4 = et_question4.getText().toString();
+			question5 = et_question5.getText().toString();
+			question6 = et_question6.getText().toString();
 			sendResult += question1 + "," + question2 + "," + question3 + "," + question4 + "," + question5 + "," + question6;
 			break;
 		case 7:
@@ -417,13 +418,13 @@ public class sessionResults extends Activity {
 			et_question5 = (EditText) findViewById(R.id.editText_question5);
 			et_question6 = (EditText) findViewById(R.id.editText_question6);
 			et_question7 = (EditText) findViewById(R.id.editText_question7);
-			question1 = et_question1.getText().toString().replace(" ", "%20");
-			question2 = et_question2.getText().toString().replace(" ", "%20");
-			question3 = et_question3.getText().toString().replace(" ", "%20");
-			question4 = et_question4.getText().toString().replace(" ", "%20");
-			question5 = et_question5.getText().toString().replace(" ", "%20");
-			question6 = et_question6.getText().toString().replace(" ", "%20");
-			question7 = et_question7.getText().toString().replace(" ", "%20");
+			question1 = et_question1.getText().toString();
+			question2 = et_question2.getText().toString();
+			question3 = et_question3.getText().toString();
+			question4 = et_question4.getText().toString();
+			question5 = et_question5.getText().toString();
+			question6 = et_question6.getText().toString();
+			question7 = et_question7.getText().toString();
 			sendResult += question1 + "," + question2 + "," + question3 + "," + question4 + "," + question5 + "," + question6
 					+ "," + question7;
 			break;
@@ -436,14 +437,14 @@ public class sessionResults extends Activity {
 			et_question6 = (EditText) findViewById(R.id.editText_question6);
 			et_question7 = (EditText) findViewById(R.id.editText_question7);
 			et_question8 = (EditText) findViewById(R.id.editText_question8);
-			question1 = et_question1.getText().toString().replace(" ", "%20");
-			question2 = et_question2.getText().toString().replace(" ", "%20");
-			question3 = et_question3.getText().toString().replace(" ", "%20");
-			question4 = et_question4.getText().toString().replace(" ", "%20");
-			question5 = et_question5.getText().toString().replace(" ", "%20");
-			question6 = et_question6.getText().toString().replace(" ", "%20");
-			question7 = et_question7.getText().toString().replace(" ", "%20");
-			question8 = et_question8.getText().toString().replace(" ", "%20");
+			question1 = et_question1.getText().toString();
+			question2 = et_question2.getText().toString();
+			question3 = et_question3.getText().toString();
+			question4 = et_question4.getText().toString();
+			question5 = et_question5.getText().toString();
+			question6 = et_question6.getText().toString();
+			question7 = et_question7.getText().toString();
+			question8 = et_question8.getText().toString();
 			sendResult += question1 + "," + question2 + "," + question3 + "," + question4 + "," + question5 + "," + question6
 					+ "," + question7 + "," + question8;
 			break;
@@ -457,15 +458,15 @@ public class sessionResults extends Activity {
 			et_question7 = (EditText) findViewById(R.id.editText_question7);
 			et_question8 = (EditText) findViewById(R.id.editText_question8);
 			et_question9 = (EditText) findViewById(R.id.editText_question9);
-			question1 = et_question1.getText().toString().replace(" ", "%20");
-			question2 = et_question2.getText().toString().replace(" ", "%20");
-			question3 = et_question3.getText().toString().replace(" ", "%20");
-			question4 = et_question4.getText().toString().replace(" ", "%20");
-			question5 = et_question5.getText().toString().replace(" ", "%20");
-			question6 = et_question6.getText().toString().replace(" ", "%20");
-			question7 = et_question7.getText().toString().replace(" ", "%20");
-			question8 = et_question8.getText().toString().replace(" ", "%20");
-			question9 = et_question9.getText().toString().replace(" ", "%20");
+			question1 = et_question1.getText().toString();
+			question2 = et_question2.getText().toString();
+			question3 = et_question3.getText().toString();
+			question4 = et_question4.getText().toString();
+			question5 = et_question5.getText().toString();
+			question6 = et_question6.getText().toString();
+			question7 = et_question7.getText().toString();
+			question8 = et_question8.getText().toString();
+			question9 = et_question9.getText().toString();
 			sendResult += question1 + "," + question2 + "," + question3 + "," + question4 + "," + question5 + "," + question6
 					+ "," + question7 + "," + question8 + "," + question9;
 			break;
@@ -480,16 +481,16 @@ public class sessionResults extends Activity {
 			et_question8 = (EditText) findViewById(R.id.editText_question8);
 			et_question9 = (EditText) findViewById(R.id.editText_question9);
 			et_question10 = (EditText) findViewById(R.id.editText_question10);
-			question1 = et_question1.getText().toString().replace(" ", "%20");
-			question2 = et_question2.getText().toString().replace(" ", "%20");
-			question3 = et_question3.getText().toString().replace(" ", "%20");
-			question4 = et_question4.getText().toString().replace(" ", "%20");
-			question5 = et_question5.getText().toString().replace(" ", "%20");
-			question6 = et_question6.getText().toString().replace(" ", "%20");
-			question7 = et_question7.getText().toString().replace(" ", "%20");
-			question8 = et_question8.getText().toString().replace(" ", "%20");
-			question9 = et_question9.getText().toString().replace(" ", "%20");
-			question10 = et_question10.getText().toString().replace(" ", "%20");
+			question1 = et_question1.getText().toString();
+			question2 = et_question2.getText().toString();
+			question3 = et_question3.getText().toString();
+			question4 = et_question4.getText().toString();
+			question5 = et_question5.getText().toString();
+			question6 = et_question6.getText().toString();
+			question7 = et_question7.getText().toString();
+			question8 = et_question8.getText().toString();
+			question9 = et_question9.getText().toString();
+			question10 = et_question10.getText().toString();
 			sendResult += question1 + "," + question2 + "," + question3 + "," + question4 + "," + question5 + "," + question6
 					+ "," + question7 + "," + question8 + "," + question9 + "," + question10;
 			break;
@@ -497,12 +498,14 @@ public class sessionResults extends Activity {
 
 		Log.d("SessionResult", sendResult);
 
-		url = String.format("http://www.fsurugby.org/serve/request.php?new_survey=1&sessionID=%s&questions=%s", sessionID, sendResult);
-
-
 		String result = "";
 		try {
-			result = serveUtilities.getStringFromUrl(url);
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+			nameValuePairs.add(new BasicNameValuePair("new_survey", "1"));
+			nameValuePairs.add(new BasicNameValuePair("sessionID", sessionID));
+			nameValuePairs.add(new BasicNameValuePair("questions", sendResult));
+
+			result = serveUtilities.getStringFromUrl(nameValuePairs);	
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -523,13 +526,14 @@ public class sessionResults extends Activity {
 	}
 	public void getSessionQuestions()
 	{
-		url = String.format("http://www.fsurugby.org/serve/request.php?survey_questions=1&sessionID=%s",sessionID);
-
 		Log.d("SessionResult", "in get indvidual result");
 
 		try{
-			jsonresults = serveUtilities.getStringFromUrl(url);
-		}
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("survey_questions", "1"));
+			nameValuePairs.add(new BasicNameValuePair("sessionID", sessionID));
+
+			jsonresults = serveUtilities.getStringFromUrl(nameValuePairs);		}
 		catch(Exception e)
 		{
 
@@ -560,11 +564,15 @@ public class sessionResults extends Activity {
 	{
 
 		Log.d("SessionResult", "in get indvidual result");
-		url = String.format("http://www.fsurugby.org/serve/request.php?get_answers=1&sessionID=%s&fname=%s&lname=%s", sID, fn, ln);
 
 		try{
-			jsonresults = serveUtilities.getStringFromUrl(url);
-		}
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+			nameValuePairs.add(new BasicNameValuePair("get_answers", "1"));
+			nameValuePairs.add(new BasicNameValuePair("sessionID", sID));
+			nameValuePairs.add(new BasicNameValuePair("lname", ln));
+			nameValuePairs.add(new BasicNameValuePair("fname", fn));
+
+			jsonresults = serveUtilities.getStringFromUrl(nameValuePairs);		}
 		catch(Exception e)
 		{
 
@@ -628,7 +636,7 @@ public class sessionResults extends Activity {
 			results2 = (ListView) findViewById(R.id.sessionResultsIndListView); 
 			fname =(TextView) findViewById(R.id.tv_sessionResultsInd_fname);
 			lname =(TextView) findViewById(R.id.tv_sessionResultsInd_lname);
-			if (sessionPermType.equals("annonysurvey")) {
+			if (sessionPermType.equals("surveyannony")) {
 				fname.setText("First Name: Annonymous");
 				lname.setText("Last Name: User");
 			}

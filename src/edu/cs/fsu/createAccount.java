@@ -2,8 +2,12 @@ package edu.cs.fsu;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -55,12 +59,14 @@ public class createAccount extends Activity{
 		firstname = (EditText) findViewById(R.id.et_firstname);
 		lastname = (EditText) findViewById(R.id.et_lastname);
 
-		String url = String.format("http://www.fsurugby.org/serve/request.php?new_user=1&username=%s&password=%s&fname=%s&lname=%s",
-				username.getText().toString(),
-				serveUtilities.SHA1(password.getText().toString()),
-				firstname.getText().toString(),
-				lastname.getText().toString());
-		String result = serveUtilities.getStringFromUrl(url);
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+		nameValuePairs.add(new BasicNameValuePair("new_user", "1"));
+		nameValuePairs.add(new BasicNameValuePair("username", username.getText().toString()));
+        nameValuePairs.add(new BasicNameValuePair("password", serveUtilities.SHA1(password.getText().toString())));
+		nameValuePairs.add(new BasicNameValuePair("fname", firstname.getText().toString()));
+		nameValuePairs.add(new BasicNameValuePair("lname", lastname.getText().toString()));
+
+		String result = serveUtilities.getStringFromUrl(nameValuePairs);
 
 		if (validateForm()) {
 			if (result.equals("good")) {

@@ -2,8 +2,13 @@ package edu.cs.fsu;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,11 +42,12 @@ public class sessionRejoin extends Activity{
 			Toast.makeText(this, "Enter a sessionID", Toast.LENGTH_SHORT).show();
 		} else {
 			
-			String url = String.format("http://www.fsurugby.org/serve/request.php?rejoin=1&sessionID=%s&password=%s", sessionID, password);
-			String result = "";
-			result = serveUtilities.getStringFromUrl(url);
-			Log.d("url", url);
-			Log.d("result", result);
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+			nameValuePairs.add(new BasicNameValuePair("rejoin", "1"));
+			nameValuePairs.add(new BasicNameValuePair("sessionID", sessionID));
+			nameValuePairs.add(new BasicNameValuePair("password", password));
+
+			String result = serveUtilities.getStringFromUrl(nameValuePairs);
 
 			String good = result.substring(0, 1);			
 			if (!good.equals("1")) {
@@ -54,7 +60,7 @@ public class sessionRejoin extends Activity{
 				editor.putString("sessionID", sessionID);
 				editor.commit();
 				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-				i.putExtra("sessionName", sessName.replace("%20", " "));
+				i.putExtra("sessionName", sessName);
 				startActivity(i);
 			}
 		}

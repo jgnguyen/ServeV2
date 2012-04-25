@@ -2,8 +2,12 @@ package edu.cs.fsu;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -32,9 +36,11 @@ public class signIn extends Activity {
 		if (username.isEmpty() || password.isEmpty()) {
 			Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_LONG).show();
 		} else {
-			String url = String.format("http://www.fsurugby.org/serve/request.php?login=1&username=%s&password=%s", username, serveUtilities.SHA1(password));
-
-			JSONArray json = new JSONArray(serveUtilities.getStringFromUrl(url));
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+			nameValuePairs.add(new BasicNameValuePair("login", "1"));
+			nameValuePairs.add(new BasicNameValuePair("username", username));
+	        nameValuePairs.add(new BasicNameValuePair("password", serveUtilities.SHA1(password)));
+			JSONArray json = new JSONArray(serveUtilities.getStringFromUrl(nameValuePairs));
 			String id = "";
 			String fname = "";
 			String lname = "";

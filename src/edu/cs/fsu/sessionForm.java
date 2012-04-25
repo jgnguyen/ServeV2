@@ -1,8 +1,12 @@
 package edu.cs.fsu;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import android.app.Activity;
@@ -18,7 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class sessionForm extends Activity{
 	String questions[];
@@ -40,11 +43,13 @@ public class sessionForm extends Activity{
 		fname = app_preferences.getString("fname", "");
 		lname = app_preferences.getString("lname", "");
 
-		String url = String.format("http://fsurugby.org/serve/request.php?survey_questions=1&sessionID=%s", sessionID);
 
 		try{
-			jsonresults = serveUtilities.getStringFromUrl(url);
-		}
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("survey_questions", "1"));
+			nameValuePairs.add(new BasicNameValuePair("sessionID", sessionID));
+
+			jsonresults = serveUtilities.getStringFromUrl(nameValuePairs);		}
 		catch(Exception e)
 		{
 			Log.d("tagger","fauked ti getstrubfrom url");
@@ -110,19 +115,23 @@ public class sessionForm extends Activity{
 
 					for (int i = 0; i < numOfQuestions; i++) {
 						if (i == 0)
-							sendResult += myEditTexts[i].getText().toString().replace(" ", "%20");
+							sendResult += myEditTexts[i].getText().toString();
 						else {
 							sendResult += ",";
-							sendResult += myEditTexts[i].getText().toString().replace(" ", "%20");
+							sendResult += myEditTexts[i].getText().toString();
 						}
 					}
 
-					String url = String.format("http://www.fsurugby.org/serve/request.php?answer_survey=1&sessionID=%s&fname=%s&lname=%s&answers=%s", 
-							sessionID, fname, lname, sendResult);
-
 					String result = "";
 					try {
-						result = serveUtilities.getStringFromUrl(url);
+						List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+						nameValuePairs.add(new BasicNameValuePair("answer_survey", "1"));
+						nameValuePairs.add(new BasicNameValuePair("sessionID", sessionID));
+						nameValuePairs.add(new BasicNameValuePair("fname", fname));
+						nameValuePairs.add(new BasicNameValuePair("lname", lname));
+						nameValuePairs.add(new BasicNameValuePair("answers", sendResult));
+
+						result = serveUtilities.getStringFromUrl(nameValuePairs);					
 					} catch (ClientProtocolException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

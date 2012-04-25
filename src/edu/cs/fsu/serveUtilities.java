@@ -7,11 +7,14 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -30,10 +33,13 @@ public class serveUtilities {
 		return convertToHex(sha1hash);
 	} 
 	
-	public static String getStringFromUrl(String url) throws ClientProtocolException, IOException {
+	public static String getStringFromUrl(List<NameValuePair> nameValuePairs) 
+			throws ClientProtocolException, IOException {
+		String url = "http://www.fsurugby.org/serve/request.php";
 		DefaultHttpClient client = new DefaultHttpClient();
-		HttpGet httpget = new HttpGet(url);
-		HttpResponse response = client.execute(httpget);
+		HttpPost httppost = new HttpPost(url);
+        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		HttpResponse response = client.execute(httppost);
 		HttpEntity entity = response.getEntity();
 		BufferedHttpEntity buffer = new BufferedHttpEntity(entity);
 		InputStream is = buffer.getContent();

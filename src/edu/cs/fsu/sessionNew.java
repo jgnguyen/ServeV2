@@ -3,8 +3,12 @@ package edu.cs.fsu;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -60,18 +64,25 @@ public class sessionNew extends Activity {
 		
 		fname = app_preferences.getString("fname", "");
 		lname = app_preferences.getString("lname", "");
-		sessName = editText_sessionName.getText().toString().replace(" ", "%20");
+		sessName = editText_sessionName.getText().toString();
 		sessionPassword = serveUtilities.SHA1(editText_sessionPassword.getText().toString());
 		sID = editText_sessionID.getText().toString();
 		
 		editor.putString("sessionID", sID);
 		editor.commit();
 
-		String url = String.format("http://www.fsurugby.org/serve/request.php?new_session=1&sessionID=%s&sessionName=%s&fname=%s&lname=%s&password=%s", sID, sessName, fname, lname, sessionPassword);
 		String result = "";
 		
 		try {
-			result = serveUtilities.getStringFromUrl(url);
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(6);
+			nameValuePairs.add(new BasicNameValuePair("new_session", "1"));
+			nameValuePairs.add(new BasicNameValuePair("sessionID", sID));
+			nameValuePairs.add(new BasicNameValuePair("sessionName", sessName));
+			nameValuePairs.add(new BasicNameValuePair("lname", lname));
+			nameValuePairs.add(new BasicNameValuePair("fname", fname));
+			nameValuePairs.add(new BasicNameValuePair("password", sessionPassword));
+
+			result = serveUtilities.getStringFromUrl(nameValuePairs);			
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -84,7 +95,7 @@ public class sessionNew extends Activity {
 		} else {
 			Intent i = new Intent(this,edu.cs.fsu.sessionResults.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-			i.putExtra("sessionName", sessName.replace("%20", " "));
+			i.putExtra("sessionName", sessName);
 			//add information to the intent
 			startActivity(i);
 		}

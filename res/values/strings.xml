@@ -37,6 +37,7 @@
     <string name="sessionTV">Session ID:</string>
     <string name="question">Question:</string>
     <string name="sessionPassword">Session Password:</string>
+    <string name="backButton">Back</string>
 
     <string-array name="sessionTypes">
         <item>Attendance</item>

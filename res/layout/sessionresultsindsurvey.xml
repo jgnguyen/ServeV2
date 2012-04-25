@@ -19,11 +19,11 @@
         android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall" />
         <Button
-        android:id="@+id/button_sessionkeysubmit"
+        android:id="@+id/button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClickBack"
-        android:text="Back" />
+        android:text="@string/backButton" />
      <ListView
         android:id="@+id/sessionResultsIndListView"
         android:layout_width="match_parent"
